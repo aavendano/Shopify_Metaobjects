@@ -1,6 +1,4 @@
-# Shopify Metaobjects Loader
-
-from .loader import ShopifyMetaobjectLoader
-from .metaobject import Metaobject
-from .utils import *
-from .api import *
+"""
+Shopify Metaobject Loader: Un módulo para gestionar metaobjetos de Shopify.
+"""
+from .loader import Metaobject, ShopifyMetaobjectLoader
