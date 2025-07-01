@@ -2,48 +2,55 @@
 
 A powerful and flexible Python toolkit for managing Shopify Metaobjects via the GraphQL Admin API.
 
-## ✨ Características
+---
 
-- **CRUD Operations**: Full support for creating, reading, updating, and deleting (CRUD) both Metaobjects and their Definitions.
-- **Batch Processing**: Efficiently load data from CSV files with automatic "upsert" (update or insert) logic based on a unique `handle`.
-- **Data Export**: Fetch and export metaobjects to CSV files for backups or analysis.
-- **Introspection**: Easily inspect the structure, fields, and validations of any metaobject definition.
-- **Resilient**: Automatic retry mechanism for API rate limits and transient network errors.
-- **Modular Design**: Clean, package-based structure that is easy to extend and integrate into other projects.
-- **Secure**: Uses environment variables to manage sensitive API credentials.
+## ✨ Features
+
+- **CRUD Operations:** Full support for creating, reading, updating, and deleting (CRUD) both Metaobjects and their Definitions.
+- **Batch Processing:** Efficiently load data from CSV files with automatic "upsert" (update or insert) logic based on a unique `handle`.
+- **Data Export:** Fetch and export metaobjects to CSV files for backups or analysis.
+- **Introspection:** Easily inspect the structure, fields, and validations of any metaobject definition.
+- **Resilient:** Automatic retry mechanism for API rate limits and transient network errors.
+- **Modular Design:** Clean, package-based structure that is easy to extend and integrate into other projects.
+- **Secure:** Uses environment variables to manage sensitive API credentials.
+
+---
 
 ## 🚀 Installation
 
-1.  Clone this repository:
+1. Clone this repository:
     ```bash
     git clone https://github.com/aavendano/Shopify_Metaobjects.git
     cd Shopify_Metaobjects
     ```
-2.  Install the dependencies:
+2. Install the dependencies:
     ```bash
     pip install -r requirements.txt
     ```
-3.  (Optional) For development, install the package in editable mode:
+3. (Optional) For development, install the package in editable mode:
     ```bash
     pip install -e .
     ```
+
+---
 
 ## 🔑 Configuration
 
 Create a `.env` file in the project root with your Shopify credentials:
 
-```
+```env
 SHOPIFY_SHOP_DOMAIN=your-store.myshopify.com
 SHOPIFY_ACCESS_TOKEN=shpat_your-admin-api-access-token
 ```
 
-## Usage
+---
 
-### CSV File Format
+## 📄 CSV File Format
 
-Your CSV file should have a header row with column names that correspond to the fields of your Shopify metaobject. The first column must be named `handle` and will be used as the unique identifier for upsert operations.
+Your CSV file should have a header row with column names that correspond to the fields of your Shopify metaobject.  
+The first column must be named `handle` and will be used as the unique identifier for upsert operations.
 
-Example CSV format:
+**Example CSV:**
 ```csv
 handle,fabric_name,stretch_level,is_organic
 main-cotton,Classic Cotton,2,true
@@ -51,7 +58,9 @@ stretch-denim,Stretch Denim,8,false
 organic-linen,Organic Linen,1,true
 ```
 
-### Basic Usage
+---
+
+## 🛠️ Basic Usage
 
 ```python
 from shopify_metaobject_loader import ShopifyMetaobjectLoader
@@ -73,7 +82,9 @@ print(f"Updated: {stats['updated']}")
 print(f"Failed: {stats['failed']}")
 ```
 
-### Running as a Script
+---
+
+## ▶️ Running as a Script
 
 You can also run the module directly as a script:
 
@@ -83,65 +94,87 @@ python shopify_metaobject_loader.py
 
 Make sure your `.env` file is properly configured before running the script.
 
-## Error Handling
+---
+
+## ⚠️ Error Handling
 
 The module includes comprehensive error handling for:
+
 - File not found or CSV parsing errors
 - Network issues or failed connections to the Shopify API
 - GraphQL API errors (invalid permissions, malformed queries, validation errors)
 
 All errors are logged with appropriate context and severity levels.
 
-## Logging
+---
 
-The module uses Python's built-in logging module. Logs include:
-- Successful operations (INFO level)
-- Warnings and non-critical errors (WARNING level)
-- Critical errors (ERROR level)
+## 📋 Logging
 
-## Contributing
+The module uses Python's built-in `logging` module. Logs include:
 
-Feel free to submit issues and enhancement requests! 
+- Successful operations (`INFO` level)
+- Warnings and non-critical errors (`WARNING` level)
+- Critical errors (`ERROR` level)
 
-Metaobject Type: Fabric Type (my_fabric_type)
-Description: A type for describing different fabric materials
+---
 
-Field Summary:
-Total Fields: 4
-Required Fields: 2
-Optional Fields: 2
+## 🤝 Contributing
 
-Field Types:
-- single_line_text_field: 2
-- number_integer: 1
-- boolean: 1
+Feel free to submit issues and enhancement requests!
 
-Required Fields:
-- Fabric Name (fabric_name)
-  Type: single_line_text_field
-  Description: The name of the fabric material
-  Validations:
-    - min_length: 2
-    - max_length: 100
+---
 
-- Stretch Level (stretch_level)
-  Type: number_integer
-  Description: The stretch level of the fabric (1-10)
-  Validations:
-    - min: 1
-    - max: 10
+## 🧵 Metaobject Type Example: Fabric Type (`my_fabric_type`)
 
-Optional Fields:
-- Is Organic (is_organic)
-  Type: boolean
-  Description: Whether the fabric is made from organic materials
+**Description:**  
+A type for describing different fabric materials
 
-- Handle (handle)
-  Type: single_line_text_field
-  Description: The unique identifier for the fabric
-  Validations:
-    - pattern: ^[a-z0-9-]+$ 
+### Field Summary
 
+|                | Count |
+|----------------|-------|
+| Total Fields   | 4     |
+| Required Fields| 2     |
+| Optional Fields| 2     |
+
+**Field Types:**
+- `single_line_text_field`: 2
+- `number_integer`: 1
+- `boolean`: 1
+
+### Required Fields
+
+- **Fabric Name** (`fabric_name`)
+  - Type: `single_line_text_field`
+  - Description: The name of the fabric material
+  - Validations:
+    - `min_length`: 2
+    - `max_length`: 100
+
+- **Stretch Level** (`stretch_level`)
+  - Type: `number_integer`
+  - Description: The stretch level of the fabric (1-10)
+  - Validations:
+    - `min`: 1
+    - `max`: 10
+
+### Optional Fields
+
+- **Is Organic** (`is_organic`)
+  - Type: `boolean`
+  - Description: Whether the fabric is made from organic materials
+
+- **Handle** (`handle`)
+  - Type: `single_line_text_field`
+  - Description: The unique identifier for the fabric
+  - Validations:
+    - `pattern`: `^[a-z0-9-]+$`
+
+---
+
+## 🧑‍💻 Metaobject Definition Example
+
+```python
 from shopify_metaobject_loader import ShopifyMetaobjectLoader
 
 # Initialize the loader
@@ -222,4 +255,5 @@ for field in description['fields']['required']:
     print(f"Key: {field['key']}")
     print(f"Type: {field['type']}")
     print(f"Description: {field['description']}")
-    print("Validations:", field['validations']) # Shopify_Metaobjects
+    print("Validations:", field['validations'])
+```
