@@ -1,3 +1,9 @@
 venv
 .env
 env
+.qodo
+.vscode
+.ipynb_checkpoints
+__pycache__
+.chat
+.db
