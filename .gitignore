@@ -4,6 +4,7 @@ env
 .qodo
 .vscode
 .ipynb_checkpoints
-__pycache__
+**__pycache__**
 .chat
 .db
+.ipynb

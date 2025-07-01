@@ -1,30 +1,40 @@
-# Shopify Metaobject Loader
+# Shopify Metaobjects Toolkit
 
-A Python module for loading data from CSV files into Shopify metaobjects using the Shopify Admin GraphQL API.
+A powerful and flexible Python toolkit for managing Shopify Metaobjects via the GraphQL Admin API.
 
-## Features
+## ✨ Características
 
-- Load data from CSV files into Shopify metaobjects
-- Automatic upsert (update or insert) based on handle field
-- Comprehensive error handling and logging
-- Type hints for better code maintainability
-- Environment variable support for secure credential management
+- **CRUD Operations**: Full support for creating, reading, updating, and deleting (CRUD) both Metaobjects and their Definitions.
+- **Batch Processing**: Efficiently load data from CSV files with automatic "upsert" (update or insert) logic based on a unique `handle`.
+- **Data Export**: Fetch and export metaobjects to CSV files for backups or analysis.
+- **Introspection**: Easily inspect the structure, fields, and validations of any metaobject definition.
+- **Resilient**: Automatic retry mechanism for API rate limits and transient network errors.
+- **Modular Design**: Clean, package-based structure that is easy to extend and integrate into other projects.
+- **Secure**: Uses environment variables to manage sensitive API credentials.
 
-## Installation
+## 🚀 Installation
 
-1. Clone this repository
-2. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
+1.  Clone this repository:
+    ```bash
+    git clone https://github.com/aavendano/Shopify_Metaobjects.git
+    cd Shopify_Metaobjects
+    ```
+2.  Install the dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  (Optional) For development, install the package in editable mode:
+    ```bash
+    pip install -e .
+    ```
 
-## Configuration
+## 🔑 Configuration
 
 Create a `.env` file in the project root with your Shopify credentials:
 
-```env
+```
 SHOPIFY_SHOP_DOMAIN=your-store.myshopify.com
-SHOPIFY_ACCESS_TOKEN=your-admin-api-access-token
+SHOPIFY_ACCESS_TOKEN=shpat_your-admin-api-access-token
 ```
 
 ## Usage

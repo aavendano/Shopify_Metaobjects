@@ -1014,58 +1014,24 @@ class ShopifyMetaobjectLoader:
 
         Raises:
             requests.RequestException: If the API request fails
+            ValueError: If the metaobject type is not found
         """
-        # Step 1: Fetch all metaobject definitions
-        list_query = """
-        query {
-          metaobjectDefinitions(first: 50) {
-            nodes {
-              id
-              type
-              name
-            }
-          }
-        }
-        """
-
-        try:
-            response = requests.post(
-                self.base_url,
-                json={"query": list_query},
-                headers=self.headers
-            )
-            response.raise_for_status()
-            data = response.json()
-
-            if "errors" in data:
-                logger.error(f"GraphQL errors: {data['errors']}")
-                return None
-
-            definitions = data.get("data", {}).get("metaobjectDefinitions", {}).get("nodes", [])
-            matching_definition = next((d for d in definitions if d["type"] == metaobject_type), None)
-
-            if not matching_definition:
-                logger.error(f"Metaobject type '{metaobject_type}' not found")
-                return None
-
-            metaobject_id = matching_definition["id"]
-
-        except requests.RequestException as e:
-            logger.error(f"Failed to fetch metaobject definitions: {str(e)}")
-            raise
-
-        # Step 2: Fetch the metaobject definition by ID
         definition_query = """
-        query getMetaobjectDefinition($id: ID!) {
-            metaobjectDefinition(id: $id) {
+        query getMetaobjectDefinitionByType($type: String!) {
+            metaobjectDefinition(type: $type) {
                 type
                 name
                 description
                 fieldDefinitions {
                     key
                     name
+                    required
                     type {
                         name
+                    }
+                    validations {
+                        name
+                        value
                     }
                 }
             }
@@ -1073,7 +1039,7 @@ class ShopifyMetaobjectLoader:
         """
 
         variables = {
-            "id": metaobject_id
+            "type": metaobject_type
         }
 
         try:
@@ -1089,7 +1055,17 @@ class ShopifyMetaobjectLoader:
                 logger.error(f"GraphQL errors: {data['errors']}")
                 return None
 
-            return data.get("data", {}).get("metaobjectDefinition")
+            definition = data.get("data", {}).get("metaobjectDefinition")
+            if not definition:
+                logger.warning(f"Metaobject definition for type '{metaobject_type}' not found.")
+                return None
+
+            # Normalize the 'type' field inside fieldDefinitions
+            for field in definition.get("fieldDefinitions", []):
+                if 'type' in field and isinstance(field['type'], dict):
+                    field['type'] = field['type']['name']
+
+            return definition
 
         except requests.RequestException as e:
             logger.error(f"Failed to fetch metaobject definition: {str(e)}")
@@ -1138,7 +1114,7 @@ class ShopifyMetaobjectLoader:
                 required_fields.append(field_info)
             else:
                 optional_fields.append(field_info)
-                
+               
         # Build the description
         description = {
             "type": definition["type"],
